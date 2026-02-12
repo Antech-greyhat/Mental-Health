@@ -1,0 +1,716 @@
+/* ============================================
+   CSS VARIABLES - University Research Theme
+   ============================================ */
+:root {
+    /* Primary Colors - Soft Pastel Wellness Theme */
+    --primary-gradient-start: #C9C3FF;
+    --primary-gradient-end: #A7C7FF;
+    --accent-violet: #7B6CF6;
+    --accent-periwinkle: #6FA8FF;
+    --accent-pink: #F8BBD0;
+    
+    /* Semantic Colors */
+    --background-main: #F5F3FF;
+    --card-background: #FFFFFFCC;
+    --text-primary: #4A4A6A;
+    --text-secondary: #6B6B8A;
+    --text-light: #9B9BB8;
+    
+    /* Status Colors */
+    --success-color: #A3D9A5;
+    --error-color: #F8A5C2;
+    --warning-color: #FFD4A3;
+    
+    /* UI Elements */
+    --border-radius-sm: 12px;
+    --border-radius-md: 16px;
+    --border-radius-lg: 20px;
+    --shadow-sm: 0 4px 12px rgba(123, 108, 246, 0.12);
+    --shadow-md: 0 6px 20px rgba(123, 108, 246, 0.18);
+    --shadow-lg: 0 10px 40px rgba(123, 108, 246, 0.25);
+    --shadow-focus: 0 0 0 4px rgba(123, 108, 246, 0.25);
+    --shadow-glow: 0 0 20px rgba(123, 108, 246, 0.4);
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* ============================================
+   ANIMATED BACKGROUND
+   ============================================ */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.5;
+    animation: float 20s infinite ease-in-out;
+}
+
+.orb-1 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(201, 195, 255, 0.7) 0%, transparent 70%);
+    top: -120px;
+    left: -120px;
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(167, 199, 255, 0.6) 0%, transparent 70%);
+    bottom: -100px;
+    right: -100px;
+    animation-delay: -7s;
+}
+
+.orb-3 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(248, 187, 208, 0.4) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -14s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(30px, -30px) scale(1.1);
+    }
+    50% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+    75% {
+        transform: translate(20px, 30px) scale(1.05);
+    }
+}
+
+/* ============================================
+   CONTAINER & CARD
+   ============================================ */
+.container {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+}
+
+.login-card {
+    background: var(--card-background);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 32px 28px;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent-violet);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Input Groups */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.input-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    color: var(--accent-pink);
+    font-size: 16px;
+    pointer-events: none;
+    transition: color var(--transition-fast);
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 12px 16px 12px 44px;
+    border: 2px solid #E4E7F2;
+    border-radius: var(--border-radius-sm);
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.8);
+    transition: all var(--transition-normal);
+    outline: none;
+}
+
+/* Add padding for inputs with toggle button */
+.input-wrapper input[type="password"],
+.input-wrapper input[type="text"] {
+    padding-right: 48px;
+}
+
+input::placeholder {
+    color: var(--text-light);
+}
+
+input:focus {
+    border-color: var(--accent-violet);
+    box-shadow: var(--shadow-focus);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+input:focus ~ .input-icon {
+    color: var(--accent-violet);
+}
+
+input.valid {
+    border-color: var(--success-color);
+}
+
+input.invalid {
+    border-color: var(--error-color);
+}
+
+/* Password Toggle */
+.toggle-password {
+    position: absolute;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+    font-size: 16px;
+}
+
+.toggle-password:hover {
+    color: var(--accent-violet);
+}
+
+.toggle-password:focus {
+    outline: 2px solid var(--accent-violet);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Error Messages */
+.error-message {
+    font-size: 13px;
+    color: var(--error-color);
+    min-height: 18px;
+    display: block;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.error-message.show {
+    opacity: 1;
+}
+
+/* ============================================
+   FORM OPTIONS (Remember Me & Forgot Password)
+   ============================================ */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent-violet);
+}
+
+.forgot-password {
+    font-size: 14px;
+    color: var(--accent-violet);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.forgot-password:hover {
+    color: var(--accent-periwinkle);
+    text-decoration: underline;
+}
+
+.forgot-password:focus {
+    outline: 2px solid var(--accent-violet);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-login {
+    width: 100%;
+    padding: 12px 24px;
+    background: var(--accent-violet);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.btn-login:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    background: #8B7CFF;
+}
+
+.btn-login:not(:disabled):active {
+    transform: translateY(0);
+}
+
+.btn-login:disabled {
+    background: #CBD5E0;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-login:focus {
+    outline: none;
+    box-shadow: var(--shadow-focus), var(--shadow-md);
+}
+
+/* Loading State */
+.btn-login.loading .btn-text {
+    opacity: 0;
+}
+
+.btn-loader {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.btn-login.loading .btn-loader {
+    display: block;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #E4E7F2;
+}
+
+.divider span {
+    padding: 0 16px;
+    font-weight: 500;
+}
+
+/* Google Button */
+.btn-google {
+    width: 100%;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
+    border: 2px solid #E4E7F2;
+    border-radius: var(--border-radius-sm);
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all var(--transition-normal);
+}
+
+.btn-google:hover {
+    background: rgba(111, 168, 255, 0.15);
+    border-color: var(--accent-periwinkle);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-google:active {
+    transform: translateY(0);
+}
+
+.btn-google:focus {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* ============================================
+   FOOTER LINK
+   ============================================ */
+.footer-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.footer-link a {
+    color: var(--accent-violet);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition-fast);
+}
+
+.footer-link a:hover {
+    color: var(--accent-periwinkle);
+    text-decoration: underline;
+}
+
+.footer-link a:focus {
+    outline: 2px solid var(--accent-violet);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablets and Small Laptops (768px - 1024px) */
+@media (max-width: 1024px) {
+    .login-card {
+        padding: 28px 24px;
+    }
+    
+    .logo {
+        font-size: 26px;
+    }
+}
+
+/* Mobile Landscape and Small Tablets (576px - 767px) */
+@media (max-width: 767px) {
+    body {
+        padding: 16px;
+    }
+    
+    .container {
+        max-width: 100%;
+    }
+    
+    .login-card {
+        padding: 24px 20px;
+    }
+    
+    .logo {
+        font-size: 24px;
+    }
+    
+    .subtitle {
+        font-size: 15px;
+    }
+    
+    input[type="email"],
+    input[type="password"] {
+        padding: 12px 16px 12px 44px;
+        font-size: 14px;
+    }
+    
+    .btn-login,
+    .btn-google {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+    
+    .gradient-orb {
+        filter: blur(60px);
+    }
+}
+
+/* Mobile Portrait (up to 575px) */
+@media (max-width: 575px) {
+    body {
+        padding: 12px;
+    }
+    
+    .login-card {
+        padding: 24px 18px;
+    }
+    
+    .header {
+        margin-bottom: 20px;
+    }
+    
+    .logo {
+        font-size: 22px;
+    }
+    
+    .subtitle {
+        font-size: 14px;
+    }
+    
+    .login-form {
+        gap: 14px;
+    }
+    
+    .input-label {
+        font-size: 13px;
+    }
+    
+    input[type="email"],
+    input[type="password"] {
+        padding: 10px 14px 10px 40px;
+        font-size: 14px;
+    }
+    
+    .input-icon {
+        left: 14px;
+        font-size: 15px;
+    }
+    
+    .toggle-password {
+        right: 12px;
+        font-size: 15px;
+    }
+    
+    .btn-login,
+    .btn-google {
+        padding: 11px 18px;
+        font-size: 14px;
+    }
+    
+    .form-options {
+        gap: 8px;
+    }
+    
+    .checkbox-label,
+    .forgot-password {
+        font-size: 13px;
+    }
+    
+    .divider {
+        margin: 16px 0;
+        font-size: 13px;
+    }
+    
+    .footer-link {
+        margin-top: 16px;
+        font-size: 13px;
+    }
+    
+    .orb-1,
+    .orb-2,
+    .orb-3 {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+/* Extra Small Devices (up to 375px) */
+@media (max-width: 375px) {
+    .login-card {
+        padding: 20px 16px;
+    }
+    
+    .logo {
+        font-size: 20px;
+    }
+    
+    input[type="email"],
+    input[type="password"] {
+        padding: 10px 12px 10px 40px;
+        font-size: 13px;
+    }
+    
+    .input-icon {
+        left: 12px;
+        font-size: 14px;
+    }
+}
+
+/* Large Screens (1440px and up) */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 500px;
+    }
+    
+    .login-card {
+        padding: 36px 32px;
+    }
+    
+    .logo {
+        font-size: 30px;
+    }
+    
+    .subtitle {
+        font-size: 17px;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .login-card {
+        border: 2px solid var(--accent-violet);
+    }
+    
+    input {
+        border-width: 2px;
+    }
+    
+    .btn-login,
+    .btn-google {
+        border-width: 2px;
+    }
+}
+
+/* Focus Visible for Keyboard Navigation */
+*:focus-visible {
+    outline: 3px solid var(--accent-violet);
+    outline-offset: 2px;
+}
