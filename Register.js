@@ -1,6 +1,6 @@
 // ============================================
 // REGISTRATION FORM - JAVASCRIPT
-// Modern form validation and interaction
+// Modern form validation and interaction with Firebase Authentication
 // ============================================
 
 // Wait for DOM to be fully loaded
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // FORM SUBMISSION
     // ============================================
     
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // Validate all fields
@@ -233,29 +233,61 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
             
-            // Simulate form submission (replace with actual API call)
-            setTimeout(() => {
-                // Get form data
-                const formData = {
-                    email: emailInput.value.trim(),
-                    password: passwordInput.value
-                };
+            // Get form data
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            
+            try {
+                // Create user with Firebase Authentication
+                const userCredential = await window.firebaseCreateUser(window.firebaseAuth, email, password);
+                const user = userCredential.user;
                 
-                console.log('Form submitted successfully!', formData);
+                console.log('User registered successfully!', user);
                 
-                // Show success message (you can customize this)
-                alert('Registration successful! Welcome to Mental Health Research.');
+                // Show success message
+                alert('Registration successful! Welcome to Mental Health.');
                 
                 // Remove loading state
                 submitBtn.classList.remove('loading');
                 
-                // Reset form (optional)
-                // form.reset();
-                // resetValidation();
+                // Redirect to dashboard or main page
+                window.location.href = 'http://localhost:3000/';
                 
-                // Redirect to login or dashboard (uncomment when ready)
-                // window.location.href = 'Login.html';
-            }, 2000);
+            } catch (error) {
+                // Remove loading state
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                
+                // Handle Firebase errors
+                console.error('Registration error:', error);
+                
+                let errorMessage = 'Registration failed. Please try again.';
+                
+                // Provide user-friendly error messages
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'This email is already registered. Please login instead.';
+                        showError(emailError, errorMessage);
+                        markInvalid(emailInput);
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Invalid email address.';
+                        showError(emailError, errorMessage);
+                        markInvalid(emailInput);
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password is too weak. Please use a stronger password.';
+                        showError(passwordError, errorMessage);
+                        markInvalid(passwordInput);
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = 'Network error. Please check your internet connection.';
+                        alert(errorMessage);
+                        break;
+                    default:
+                        alert(errorMessage);
+                }
+            }
         }
     });
     
@@ -283,15 +315,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // ============================================
-    // GOOGLE SIGN IN (Mock Implementation)
+    // GOOGLE SIGN IN
     // ============================================
     
     const googleBtn = document.querySelector('.btn-google');
-    googleBtn.addEventListener('click', function() {
+    googleBtn.addEventListener('click', async function() {
         console.log('Google Sign In clicked');
-        alert('Google Sign In functionality would be implemented here using Google OAuth.');
-        // Implement Google OAuth here
-        // Example: window.location.href = 'your-google-oauth-url';
+        
+        try {
+            // Sign in with Google using popup
+            const result = await window.firebaseSignInWithPopup(window.firebaseAuth, window.firebaseGoogleProvider);
+            const user = result.user;
+            
+            console.log('Google sign-in successful!', user);
+            alert('Successfully signed in with Google!');
+            
+            // Redirect to dashboard or main page
+            window.location.href = 'http://localhost:3000/';
+            
+        } catch (error) {
+            console.error('Google sign-in error:', error);
+            
+            let errorMessage = 'Google sign-in failed. Please try again.';
+            
+            // Handle specific errors
+            switch (error.code) {
+                case 'auth/popup-closed-by-user':
+                    errorMessage = 'Sign-in popup was closed.';
+                    break;
+                case 'auth/popup-blocked':
+                    errorMessage = 'Pop-up was blocked by your browser. Please allow pop-ups for this site.';
+                    break;
+                case 'auth/account-exists-with-different-credential':
+                    errorMessage = 'An account already exists with this email using a different sign-in method.';
+                    break;
+            }
+            
+            alert(errorMessage);
+        }
     });
     
     // ============================================

@@ -108,6 +108,34 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAz6OtqS3o55G2oE6ioYbqHSAjuJ22L3rM",
+            authDomain: "mens-toolkit.firebaseapp.com",
+            projectId: "mens-toolkit",
+            storageBucket: "mens-toolkit.firebasestorage.app",
+            messagingSenderId: "1057587614766",
+            appId: "1:1057587614766:web:c4be29fd8224912db43bbf"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // Make available globally
+        window.firebaseAuth = auth;
+        window.firebaseSignIn = signInWithEmailAndPassword;
+        window.firebaseGoogleProvider = googleProvider;
+        window.firebaseSignInWithPopup = signInWithPopup;
+    </script>
+
     <!-- JavaScript -->
     <script src="Login.js"></script>
 </body>

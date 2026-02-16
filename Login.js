@@ -1,6 +1,6 @@
 // ============================================
 // LOGIN FORM - JAVASCRIPT
-// Modern form validation and interaction
+// Modern form validation and interaction with Firebase Authentication
 // ============================================
 
 // Wait for DOM to be fully loaded
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // FORM SUBMISSION
     // ============================================
     
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // Validate all fields
@@ -207,26 +207,74 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.removeItem('rememberedEmail');
             }
             
-            // Simulate form submission (replace with actual API call)
-            setTimeout(() => {
-                // Get form data
-                const formData = {
-                    email: emailInput.value.trim(),
-                    password: passwordInput.value,
-                    rememberMe: rememberMeCheckbox.checked
-                };
+            // Get form data
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            
+            try {
+                // Sign in with Firebase Authentication
+                const userCredential = await window.firebaseSignIn(window.firebaseAuth, email, password);
+                const user = userCredential.user;
                 
-                console.log('Login submitted successfully!', formData);
+                console.log('Login successful!', user);
                 
-                // Show success message (you can customize this)
+                // Show success message
                 alert('Login successful! Welcome back.');
                 
                 // Remove loading state
                 submitBtn.classList.remove('loading');
                 
-                // Redirect to dashboard (uncomment when ready)
-                // window.location.href = 'dashboard.html';
-            }, 2000);
+                // Redirect to dashboard or main page
+                window.location.href = 'http://localhost:3000/';
+                
+            } catch (error) {
+                // Remove loading state
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                
+                // Handle Firebase errors
+                console.error('Login error:', error);
+                
+                let errorMessage = 'Login failed. Please try again.';
+                
+                // Provide user-friendly error messages
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'No account found with this email. Please register first.';
+                        showError(emailError, errorMessage);
+                        markInvalid(emailInput);
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Incorrect password. Please try again.';
+                        showError(passwordError, errorMessage);
+                        markInvalid(passwordInput);
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Invalid email address.';
+                        showError(emailError, errorMessage);
+                        markInvalid(emailInput);
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'This account has been disabled.';
+                        alert(errorMessage);
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Too many failed login attempts. Please try again later.';
+                        alert(errorMessage);
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = 'Network error. Please check your internet connection.';
+                        alert(errorMessage);
+                        break;
+                    case 'auth/invalid-credential':
+                        errorMessage = 'Invalid email or password. Please check your credentials.';
+                        showError(passwordError, errorMessage);
+                        markInvalid(passwordInput);
+                        break;
+                    default:
+                        alert(errorMessage);
+                }
+            }
         }
     });
     
@@ -253,15 +301,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // ============================================
-    // GOOGLE SIGN IN (Mock Implementation)
+    // GOOGLE SIGN IN
     // ============================================
     
     const googleBtn = document.querySelector('.btn-google');
-    googleBtn.addEventListener('click', function() {
+    googleBtn.addEventListener('click', async function() {
         console.log('Google Sign In clicked');
-        alert('Google Sign In functionality would be implemented here using Google OAuth.');
-        // Implement Google OAuth here
-        // Example: window.location.href = 'your-google-oauth-url';
+        
+        try {
+            // Sign in with Google using popup
+            const result = await window.firebaseSignInWithPopup(window.firebaseAuth, window.firebaseGoogleProvider);
+            const user = result.user;
+            
+            console.log('Google sign-in successful!', user);
+            alert('Successfully signed in with Google!');
+            
+            // Redirect to dashboard or main page
+            window.location.href = 'http://localhost:3000/';
+            
+        } catch (error) {
+            console.error('Google sign-in error:', error);
+            
+            let errorMessage = 'Google sign-in failed. Please try again.';
+            
+            // Handle specific errors
+            switch (error.code) {
+                case 'auth/popup-closed-by-user':
+                    errorMessage = 'Sign-in popup was closed.';
+                    break;
+                case 'auth/popup-blocked':
+                    errorMessage = 'Pop-up was blocked by your browser. Please allow pop-ups for this site.';
+                    break;
+                case 'auth/account-exists-with-different-credential':
+                    errorMessage = 'An account already exists with this email using a different sign-in method.';
+                    break;
+            }
+            
+            alert(errorMessage);
+        }
     });
     
     // ============================================
