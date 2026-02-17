@@ -3,6 +3,14 @@
 // Modern form validation and interaction with Firebase Authentication
 // ============================================
 
+// Import Firebase modules from config
+import { 
+    auth, 
+    createUserWithEmailAndPassword, 
+    googleProvider,
+    signInWithPopup 
+} from './firebase-config.js';
+
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     
@@ -239,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             try {
                 // Create user with Firebase Authentication
-                const userCredential = await window.firebaseCreateUser(window.firebaseAuth, email, password);
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 
                 console.log('User registered successfully!', user);
@@ -250,8 +258,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Remove loading state
                 submitBtn.classList.remove('loading');
                 
-                // Redirect to dashboard or main page
-                window.location.href = 'http://localhost:3000/';
+                // Redirect to login page after successful registration
+                window.location.href = 'Login.html';
                 
             } catch (error) {
                 // Remove loading state
@@ -324,14 +332,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         try {
             // Sign in with Google using popup
-            const result = await window.firebaseSignInWithPopup(window.firebaseAuth, window.firebaseGoogleProvider);
+            const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
             
             console.log('Google sign-in successful!', user);
             alert('Successfully signed in with Google!');
             
-            // Redirect to dashboard or main page
-            window.location.href = 'http://localhost:3000/';
+            // Redirect to login page after successful registration
+            window.location.href = 'Login.html';
             
         } catch (error) {
             console.error('Google sign-in error:', error);
