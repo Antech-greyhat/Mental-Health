@@ -243,8 +243,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Remove loading state
                 submitBtn.classList.remove('loading');
                 
-                // Redirect to a success page (update this to your actual destination)
-                // For now, just stays on the page. Add redirect as needed:
+                // User successfully logged in
+                // You can redirect to a dashboard or home page here
                 // window.location.href = 'dashboard.html';
                 
             } catch (error) {
@@ -337,8 +337,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Google sign-in successful!', user);
                 alert('Successfully signed in with Google!');
                 
-                // Redirect to a success page (update this to your actual destination)
-                // For now, just stays on the page. Add redirect as needed:
+                // User successfully logged in
+                // You can redirect to a dashboard or home page here
                 // window.location.href = 'dashboard.html';
                 
             } catch (error) {

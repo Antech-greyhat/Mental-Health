@@ -348,10 +348,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const user = result.user;
                 
                 console.log('Google sign-in successful!', user);
-                alert('Successfully signed in with Google!');
+                alert('Successfully registered with Google!');
                 
-                // Redirect to login page after successful registration
-                window.location.href = 'Login.html';
+                // Account created, user is now logged in
+                // You can redirect to a dashboard or home page here
+                // window.location.href = 'dashboard.html';
                 
             } catch (error) {
             console.error('Google sign-in error:', error);
