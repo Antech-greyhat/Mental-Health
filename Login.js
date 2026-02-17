@@ -32,6 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Password toggle button
     const togglePasswordButton = document.querySelector('.toggle-password');
     
+    // Check if all required elements exist
+    if (!form || !submitBtn || !emailInput || !passwordInput) {
+        console.error('Required form elements not found');
+        return;
+    }
+    
     // ============================================
     // VALIDATION STATE
     // ============================================
@@ -141,21 +147,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // PASSWORD TOGGLE FUNCTIONALITY
     // ============================================
     
-    togglePasswordButton.addEventListener('click', function() {
-        const icon = this.querySelector('i');
-        
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-            this.setAttribute('aria-label', 'Hide password');
-        } else {
-            passwordInput.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-            this.setAttribute('aria-label', 'Show password');
-        }
-    });
+    if (togglePasswordButton) {
+        togglePasswordButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const icon = this.querySelector('i');
+            
+            if (icon) {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                    this.setAttribute('aria-label', 'Hide password');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                    this.setAttribute('aria-label', 'Show password');
+                }
+            }
+        });
+    }
     
     // ============================================
     // EVENT LISTENERS FOR REAL-TIME VALIDATION
@@ -314,22 +325,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
     
     const googleBtn = document.querySelector('.btn-google');
-    googleBtn.addEventListener('click', async function() {
-        console.log('Google Sign In clicked');
-        
-        try {
-            // Sign in with Google using popup
-            const result = await signInWithPopup(auth, googleProvider);
-            const user = result.user;
+    if (googleBtn) {
+        googleBtn.addEventListener('click', async function() {
+            console.log('Google Sign In clicked');
             
-            console.log('Google sign-in successful!', user);
-            alert('Successfully signed in with Google!');
-            
-            // Redirect to a success page (update this to your actual destination)
-            // For now, just stays on the page. Add redirect as needed:
-            // window.location.href = 'dashboard.html';
-            
-        } catch (error) {
+            try {
+                // Sign in with Google using popup
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                
+                console.log('Google sign-in successful!', user);
+                alert('Successfully signed in with Google!');
+                
+                // Redirect to a success page (update this to your actual destination)
+                // For now, just stays on the page. Add redirect as needed:
+                // window.location.href = 'dashboard.html';
+                
+            } catch (error) {
             console.error('Google sign-in error:', error);
             
             let errorMessage = 'Google sign-in failed. Please try again.';
@@ -350,6 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(errorMessage);
         }
     });
+    }
     
     // ============================================
     // FORGOT PASSWORD (Mock Implementation)

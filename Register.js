@@ -33,6 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Password toggle buttons
     const togglePasswordButtons = document.querySelectorAll('.toggle-password');
     
+    // Check if all required elements exist
+    if (!form || !submitBtn || !emailInput || !passwordInput || !confirmPasswordInput) {
+        console.error('Required form elements not found');
+        return;
+    }
+    
     // ============================================
     // VALIDATION STATE
     // ============================================
@@ -173,25 +179,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // PASSWORD TOGGLE FUNCTIONALITY
     // ============================================
     
-    togglePasswordButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const targetId = this.dataset.target;
-            const targetInput = document.getElementById(targetId);
-            const icon = this.querySelector('i');
-            
-            if (targetInput.type === 'password') {
-                targetInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-                this.setAttribute('aria-label', 'Hide password');
-            } else {
-                targetInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-                this.setAttribute('aria-label', 'Show password');
-            }
+    if (togglePasswordButtons && togglePasswordButtons.length > 0) {
+        togglePasswordButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.dataset.target;
+                const targetInput = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                
+                if (targetInput && icon) {
+                    if (targetInput.type === 'password') {
+                        targetInput.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                        this.setAttribute('aria-label', 'Hide password');
+                    } else {
+                        targetInput.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                        this.setAttribute('aria-label', 'Show password');
+                    }
+                }
+            });
         });
-    });
+    }
     
     // ============================================
     // EVENT LISTENERS FOR REAL-TIME VALIDATION
@@ -327,21 +338,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
     
     const googleBtn = document.querySelector('.btn-google');
-    googleBtn.addEventListener('click', async function() {
-        console.log('Google Sign In clicked');
-        
-        try {
-            // Sign in with Google using popup
-            const result = await signInWithPopup(auth, googleProvider);
-            const user = result.user;
+    if (googleBtn) {
+        googleBtn.addEventListener('click', async function() {
+            console.log('Google Sign In clicked');
             
-            console.log('Google sign-in successful!', user);
-            alert('Successfully signed in with Google!');
-            
-            // Redirect to login page after successful registration
-            window.location.href = 'Login.html';
-            
-        } catch (error) {
+            try {
+                // Sign in with Google using popup
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                
+                console.log('Google sign-in successful!', user);
+                alert('Successfully signed in with Google!');
+                
+                // Redirect to login page after successful registration
+                window.location.href = 'Login.html';
+                
+            } catch (error) {
             console.error('Google sign-in error:', error);
             
             let errorMessage = 'Google sign-in failed. Please try again.';
@@ -362,6 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(errorMessage);
         }
     });
+    }
     
     // ============================================
     // ACCESSIBILITY: Form submission on Enter key
