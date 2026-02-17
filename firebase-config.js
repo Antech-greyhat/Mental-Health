@@ -35,6 +35,11 @@ const auth = getAuth(app);
 // Initialize Google Auth Provider
 const googleProvider = new GoogleAuthProvider();
 
+// Configure Google Provider to always prompt for account selection
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
 // Export for use in other files
 export { 
   auth, 

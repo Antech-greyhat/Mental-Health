@@ -342,39 +342,60 @@ document.addEventListener('DOMContentLoaded', function() {
         googleBtn.addEventListener('click', async function() {
             console.log('Google Sign In clicked');
             
+            // Disable button and show loading state
+            googleBtn.disabled = true;
+            googleBtn.style.opacity = '0.7';
+            googleBtn.style.cursor = 'wait';
+            
             try {
                 // Sign in with Google using popup
                 const result = await signInWithPopup(auth, googleProvider);
                 const user = result.user;
                 
-                console.log('Google sign-in successful!', user);
-                alert('Successfully registered with Google!');
+                console.log('Google sign-in successful!');
+                console.log('User:', user.email);
+                alert('Successfully registered with Google!\nWelcome ' + user.displayName + '!');
                 
                 // Account created, user is now logged in
                 // You can redirect to a dashboard or home page here
                 // window.location.href = 'dashboard.html';
                 
             } catch (error) {
-            console.error('Google sign-in error:', error);
-            
-            let errorMessage = 'Google sign-in failed. Please try again.';
-            
-            // Handle specific errors
-            switch (error.code) {
-                case 'auth/popup-closed-by-user':
-                    errorMessage = 'Sign-in popup was closed.';
-                    break;
-                case 'auth/popup-blocked':
-                    errorMessage = 'Pop-up was blocked by your browser. Please allow pop-ups for this site.';
-                    break;
-                case 'auth/account-exists-with-different-credential':
-                    errorMessage = 'An account already exists with this email using a different sign-in method.';
-                    break;
+                console.error('Google sign-in error:', error);
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
+                
+                let errorMessage = 'Google sign-in failed. Please try again.';
+                
+                // Handle specific errors
+                switch (error.code) {
+                    case 'auth/popup-closed-by-user':
+                        errorMessage = 'Sign-in popup was closed. Please try again.';
+                        break;
+                    case 'auth/popup-blocked':
+                        errorMessage = 'Pop-up was blocked by your browser. Please allow pop-ups for this site.';
+                        break;
+                    case 'auth/cancelled-popup-request':
+                        errorMessage = 'Only one popup request is allowed at a time.';
+                        break;
+                    case 'auth/unauthorized-domain':
+                        errorMessage = 'This domain is not authorized for OAuth operations. Please add it to your Firebase Console\nunder Authentication > Settings > Authorized domains.';
+                        break;
+                    case 'auth/account-exists-with-different-credential':
+                        errorMessage = 'An account already exists with this email using a different sign-in method.';
+                        break;
+                    default:
+                        errorMessage = 'Google sign-in error: ' + error.message;
+                }
+                
+                alert(errorMessage);
+            } finally {
+                // Re-enable button
+                googleBtn.disabled = false;
+                googleBtn.style.opacity = '1';
+                googleBtn.style.cursor = 'pointer';
             }
-            
-            alert(errorMessage);
-        }
-    });
+        });
     }
     
     // ============================================
